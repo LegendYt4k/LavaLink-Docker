@@ -1,9 +1,5 @@
-# Use a base image with Java and Node.js
-FROM adoptopenjdk:11-jre-hotspot AS java_node_base
-
-# Install Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
+# Use a base image with Java
+FROM adoptopenjdk:11-jre-hotspot
 
 # Set the working directory
 WORKDIR /app
@@ -14,11 +10,8 @@ COPY Lavalink.jar /app/Lavalink.jar
 COPY index.js /app/index.js
 COPY application.yml /app/application.yml
 
-# Grant execute permissions to the script
-RUN chmod +x /app/start.sh
-
-# Expose port 443
+# Expose port 443 (if Lavalink uses it)
 EXPOSE 443
 
-# Start the script
-CMD ["/app/start.sh"]
+# Start Lavalink
+CMD ["java", "-jar", "Lavalink.jar"]
